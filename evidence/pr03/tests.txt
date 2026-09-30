@@ -1,0 +1,75 @@
+PR03 verification
+=================
+
+Environment
+-----------
+ROS 2 Lyrical
+Pose type: turtlesim_msgs/msg/Pose
+Implementation commit: 8aa7cbb65ea6b439f6f192bffae3216eb4f2c416
+
+Build
+-----
+Command:
+  colcon build --symlink-install --packages-select turtle_bringup patrol
+
+Result:
+  Finished <<< turtle_bringup
+  Finished <<< patrol
+  Summary: 2 packages finished
+
+Tests
+-----
+Command:
+  cd src/patrol
+  python3 -m pytest test -v
+
+Result:
+  test_copyright.py: skipped (generated test has no source copyright header)
+  test_flake8.py: passed
+  test_mypy.py: passed
+  test_patrol.py::test_command_without_pose_is_zero: passed
+  test_patrol.py::test_command_with_pose_moves_and_turns: passed
+  test_pep257.py: passed
+  test_xmllint.py: passed
+  6 passed, 1 skipped
+
+Defect reproduction
+-------------------
+Command:
+  ros2 run patrol patrol
+
+Observed:
+  /cmd_vel: publisher count 1, subscription count 0
+  /turtle1/cmd_vel: publisher count 0, subscription count 1
+  Pose remained at x=5.544444561004639, y=5.544444561004639,
+  theta=0.0 for at least three seconds.
+  Both velocities were 0.0.
+
+Remap verification
+------------------
+Command:
+  ros2 run patrol patrol --ros-args -r cmd_vel:=/turtle1/cmd_vel
+
+Observed:
+  /turtle1/cmd_vel: publisher count 1, subscription count 1
+  Pose changed while linear_velocity=0.5 and
+  angular_velocity=0.30000001192092896.
+
+Frequency
+---------
+Command:
+  timeout 10s ros2 topic hz /turtle1/cmd_vel --window 100
+
+Result:
+  Average rate remained between 9.999 Hz and 10.000 Hz.
+
+Shutdown
+--------
+After stopping patrol with Ctrl+C and waiting two seconds:
+  ros2 node list returned only /turtlesim.
+  Two pose samples two seconds apart were identical:
+  x=6.60270357131958
+  y=8.495393753051758
+  theta=2.448132276535034
+  linear_velocity=0.0
+  angular_velocity=0.0
