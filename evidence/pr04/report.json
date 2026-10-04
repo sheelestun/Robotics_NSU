@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR04",
+  "commit": "54b8965a79169b5398391afb1b6fd5dbab589597",
+  "course_kit": {
+    "version": "v1-w04",
+    "archive_sha256": "fec6b4e886c19146078bf69fbf90a19279a4cd33f656642395350b299efeb226"
+  },
+  "commands": [
+    "colcon build --symlink-install --packages-select turtle_bringup patrol",
+    "colcon test --packages-select turtle_bringup patrol --event-handlers console_direct+",
+    "colcon test-result --verbose",
+    "ros2 param set /patrol publish_hz 5.0",
+    "ros2 param set /patrol publish_hz 0.0",
+    "python3 .course-kit/v1/tools/check_practice.py PR04 --submission ."
+  ],
+  "tests": [
+    {
+      "name": "colcon build",
+      "status": "passed"
+    },
+    {
+      "name": "patrol and turtle_bringup tests: 24 tests, 0 failures",
+      "status": "passed"
+    },
+    {
+      "name": "dynamic parameters: 10 to 5 Hz and invalid-value rejection",
+      "status": "passed"
+    }
+  ],
+  "defect": {
+    "reproducer": "With the publish_hz lower-bound check temporarily disabled, ros2 param set /patrol publish_hz 0.0 terminated the node with ZeroDivisionError.",
+    "root_cause": "The timer period was calculated as 1.0 / publish_hz after accepting zero.",
+    "proof_after": "With validation restored, the same command was rejected, publish_hz remained 5.0, and /patrol stayed active."
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 2
+  },
+  "ai_used": true
+}

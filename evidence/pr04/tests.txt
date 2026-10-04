@@ -1,0 +1,31 @@
+PR04 verification in osrf/ros:lyrical-desktop-full
+
+Command:
+  colcon build --symlink-install --packages-select turtle_bringup patrol
+
+Result:
+  Summary: 2 packages finished
+
+Command:
+  colcon test --packages-select turtle_bringup patrol --event-handlers console_direct+
+  colcon test-result --verbose
+
+Result:
+  patrol: 18 passed, 1 skipped
+  turtle_bringup: 4 passed, 1 skipped
+  Summary: 24 tests, 0 errors, 0 failures, 2 skipped
+
+Pure-function coverage for publish_hz:
+  accepted: 10.0, 5.0
+  rejected: 0.0, -1.0, NaN
+
+Live ROS checks:
+  initial /turtle1/cmd_vel rate: 9.999 Hz
+  rate after publish_hz=5.0: 5.000 Hz
+  publish_hz=0.0 rejected; stored value remained 5.0; /patrol remained active
+  configured Twist observed with linear.x=0.8 and angular.z=-0.4
+  /clear returned std_srvs.srv.Empty_Response
+  /turtle1/rotate_absolute type: turtlesim_msgs/action/RotateAbsolute
+
+Course-kit checker is intentionally deferred until the implementation commit exists,
+because evidence/pr04/report.json must reference that 40-character commit SHA.
