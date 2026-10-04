@@ -10,8 +10,8 @@ jobs:
     container:
       image: osrf/ros:lyrical-desktop-full@sha256:12f03ad224f4f7801c4eeb320934b198fe0b9536d70f2f617894da08ca3bedba
     env:
-      COURSE_KIT_URL: https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w03-7fbfd3e8161a.tar.gz
-      COURSE_KIT_SHA256: 7fbfd3e8161ab6c6ebefc7663efdaf77d9a7d490399743507f33dcefbd5ac522
+      COURSE_KIT_URL: https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w04-fec6b4e886c1.tar.gz
+      COURSE_KIT_SHA256: fec6b4e886c19146078bf69fbf90a19279a4cd33f656642395350b299efeb226
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,13 +26,12 @@ jobs:
           python3 -m py_compile \
             src/turtle_bringup/launch/sim.launch.py \
             src/patrol/patrol/patrol.py
-      - name: Test patrol
+      - name: Test ROS packages
         shell: bash
         run: |
           source /opt/ros/lyrical/setup.bash
-          source install/setup.bash
-          cd src/patrol
-          python3 -m pytest test -v
+          colcon test --packages-select turtle_bringup patrol --event-handlers console_direct+
+          colcon test-result --verbose
       - name: Download course kit
         shell: bash
         run: |
@@ -40,6 +39,6 @@ jobs:
           printf '%s  %s\n' "$COURSE_KIT_SHA256" course-kit.tar.gz | sha256sum -c -
           mkdir -p .course-kit
           tar -xzf course-kit.tar.gz -C .course-kit
-      - name: Check PR03 evidence
+      - name: Check PR04 evidence
         shell: bash
-        run: python3 .course-kit/v1/tools/check_practice.py PR03 --submission .
+        run: python3 .course-kit/v1/tools/check_practice.py PR04 --submission .
