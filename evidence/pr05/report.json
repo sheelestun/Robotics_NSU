@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR05",
+  "commit": "6b888e8eb8dcfea79a26fce9b0eac00b91b485b3",
+  "course_kit": {
+    "version": "v1-w05",
+    "archive_sha256": "bca214e3de6f90f9513049dfa0f36fee65ad834da502dc3f3f8fb443517b5197"
+  },
+  "commands": [
+    "colcon build --symlink-install --packages-select turtle_bringup patrol course_bringup",
+    "colcon test --packages-select turtle_bringup patrol course_bringup --event-handlers console_direct+",
+    "colcon test-result --verbose",
+    "ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=reliable record:=false",
+    "timeout 3s ros2 topic echo /robot_a/sensor_pose --qos-reliability reliable --once",
+    "ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=best_effort record:=true bag_dir:=evidence/pr05/bag",
+    "timeout 3s ros2 topic echo /robot_a/sensor_pose --qos-reliability best_effort --once",
+    "ros2 bag play evidence/pr05/bag --qos-profile-overrides-path config/qos-overrides.yaml",
+    "ros2 bag info evidence/pr05/bag",
+    "python3 .course-kit/v1/tools/check_practice.py PR05 --submission ."
+  ],
+  "tests": [
+    {
+      "name": "colcon build for turtle_bringup, patrol, and course_bringup",
+      "status": "passed"
+    },
+    {
+      "name": "colcon test for selected workspace packages",
+      "status": "passed"
+    },
+    {
+      "name": "live QoS incompatibility and compatible delivery",
+      "status": "passed"
+    },
+    {
+      "name": "MCAP replay with best_effort override",
+      "status": "passed"
+    }
+  ],
+  "defect": {
+    "reproducer": "A reliable subscriber and ros2 topic echo received no messages from the visible /robot_a/sensor_pose best-effort publisher during a three-second timeout.",
+    "root_cause": "DDS reliability compatibility is requested-versus-offered: a RELIABLE reader cannot match a BEST_EFFORT writer.",
+    "proof_after": "With subscriber_reliability:=best_effort, the live echo received Pose messages; the same profile also received messages from the recorded MCAP using config/qos-overrides.yaml."
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true,
+    "replay_verified": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 2
+  },
+  "ai_used": true
+}

@@ -1,0 +1,31 @@
+PR05 QoS mismatch reproduction (ROS 2 Lyrical)
+
+$ ros2 launch course_bringup patrol.launch.py namespace:=robot_a subscriber_reliability:=reliable record:=false
+[pose_subscriber-4] [INFO] [robot_a.pose_subscriber]: waiting for sensor_pose with reliable QoS
+[pose_subscriber-4] [WARN] [robot_a.pose_subscriber]: New publisher discovered on topic 'sensor_pose', offering incompatible QoS. No messages will be received from it. Last incompatible policy: RELIABILITY
+[pose_relay-3] [WARN] [robot_a.pose_relay]: New subscription discovered on topic 'sensor_pose', requesting incompatible QoS. No messages will be sent to it. Last incompatible policy: RELIABILITY
+
+$ ros2 node list
+/robot_a/patrol
+/robot_a/pose_relay
+/robot_a/pose_subscriber
+/turtlesim
+
+$ ros2 topic info /robot_a/sensor_pose --verbose
+Type: turtlesim_msgs/msg/Pose
+Publisher count: 1
+Node name: pose_relay
+Node namespace: /robot_a
+QoS profile:
+  Reliability: BEST_EFFORT
+  History (Depth): KEEP_LAST (10)
+Subscription count: 1
+Node name: pose_subscriber
+Node namespace: /robot_a
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (10)
+
+$ timeout 3s ros2 topic echo /robot_a/sensor_pose --qos-reliability reliable --once
+[WARN] [_ros2cli]: New publisher discovered on topic '/robot_a/sensor_pose', offering incompatible QoS. No messages will be received from it. Last incompatible policy: RELIABILITY
+Result: no Pose message was received before the timeout.
