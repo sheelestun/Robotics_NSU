@@ -1,0 +1,166 @@
+## /tf_static publisher
+Type: tf2_msgs/msg/TFMessage
+
+Publisher count: 1
+
+Node name: robot_state_publisher
+Node namespace: /
+Topic type: tf2_msgs/msg/TFMessage
+Topic type hash: RIHS01_e369d0f05a23ae52508854b66f6aa0437f3449d652e8cbf22d5abe85d020f087
+Endpoint type: PUBLISHER
+GID: 01.0f.eb.7d.0c.02.b5.0f.00.00.00.00.00.00.16.03
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (1)
+  Durability: TRANSIENT_LOCAL
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 0
+
+## late transient_local reader
+transforms:
+- header:
+    stamp:
+      sec: 1792670668
+      nanosec: 628951118
+    frame_id: base_link
+  child_frame_id: camera_link
+  transform:
+    translation:
+      x: 0.28
+      y: 0.0
+      z: 0.38
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1792670668
+      nanosec: 628951118
+    frame_id: base_link
+  child_frame_id: front_left_wheel_link
+  transform:
+    translation:
+      x: 0.4
+      y: 0.31
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1792670668
+      nanosec: 628951118
+    frame_id: base_link
+  child_frame_id: front_right_wheel_link
+  transform:
+    translation:
+      x: 0.4
+      y: -0.31
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1792670668
+      nanosec: 628951118
+    frame_id: base_link
+  child_frame_id: imu_link
+  transform:
+    translation:
+      x: 0.28
+      y: 0.0
+      z: 0.38
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1792670668
+      nanosec: 628951118
+    frame_id: base_link
+  child_frame_id: lidar_link
+  transform:
+    translation:
+      x: 0.28
+      y: 0.0
+      z: 0.38
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1792670668
+      nanosec: 628951118
+    frame_id: base_link
+  child_frame_id: rear_left_wheel_link
+  transform:
+    translation:
+      x: -0.4
+      y: 0.31
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+- header:
+    stamp:
+      sec: 1792670668
+      nanosec: 628951118
+    frame_id: base_link
+  child_frame_id: rear_right_wheel_link
+  transform:
+    translation:
+      x: -0.4
+      y: -0.31
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+---
+exit=0
+## late volatile reader
+!rclpy.ok()
+exit=124
+## /tf profile
+Type: tf2_msgs/msg/TFMessage
+
+Publisher count: 1
+
+Node name: robot_state_publisher
+Node namespace: /
+Topic type: tf2_msgs/msg/TFMessage
+Topic type hash: RIHS01_e369d0f05a23ae52508854b66f6aa0437f3449d652e8cbf22d5abe85d020f087
+Endpoint type: PUBLISHER
+GID: 01.0f.eb.7d.0c.02.b5.0f.00.00.00.00.00.00.15.03
+QoS profile:
+  Reliability: RELIABLE
+  History (Depth): KEEP_LAST (100)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 0
+
+## Interpretation
+/tf_static carries fixed transforms with reliable, transient-local durability. The late transient-local subscriber received the saved transforms (exit=0); a late volatile subscriber received no historical sample (exit=124).
+/tf uses volatile durability for changing transforms, so retaining a single old sample for a late joiner would be misleading. The publisher in this static-only model has no dynamic frames until a joint-state source is added.

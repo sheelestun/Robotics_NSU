@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR06",
+  "commit": "941f7ec88eea357d024182b43a551f8f3010cf2d",
+  "course_kit": {
+    "version": "v1-w07",
+    "archive_sha256": "9b7fdd5424d3d97e47d51dbe23064934585e62135dc2902844dd679529bda929"
+  },
+  "commands": [
+    "xacro src/course_description/urdf/vehicle.urdf.xacro > /tmp/pr06-vehicle.urdf",
+    "check_urdf /tmp/pr06-vehicle.urdf",
+    "colcon build --symlink-install --packages-select course_description",
+    "colcon test --packages-select course_description --event-handlers console_direct+",
+    "ros2 topic info /tf_static --verbose",
+    "ros2 topic echo /tf_static --once --qos-durability transient_local --qos-reliability reliable",
+    "ros2 topic echo /tf_static --once --qos-durability volatile --qos-reliability reliable",
+    "ros2 run tf2_ros tf2_echo base_link lidar_link",
+    "ros2 launch course_description description.launch.py rviz:=true"
+  ],
+  "tests": [{"name": "course_description/test_model", "status": "passed"}],
+  "defect": {
+    "reproducer": "Временно заменить parent lidar_joint на camera_link без смены offset; pytest: 1 failed, 1 passed (ожидался base_link)",
+    "root_cause": "Смещение лидара складывается со смещением камеры, хотя URDF остаётся структурно связным",
+    "proof_after": "Вернуть parent base_link; pytest: 2 passed"
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 2
+  },
+  "ai_used": true
+}

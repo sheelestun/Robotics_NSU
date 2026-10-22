@@ -1,0 +1,60 @@
+xacro src/course_description/urdf/vehicle.urdf.xacro > /tmp/pr06-vehicle.urdf
+check_urdf /tmp/pr06-vehicle.urdf
+robot name is: course_ackermann
+---------- Successfully Parsed XML ---------------
+root Link: base_link has 7 child(ren)
+    child(1):  camera_link
+    child(2):  front_left_wheel_link
+    child(3):  front_right_wheel_link
+    child(4):  imu_link
+    child(5):  lidar_link
+    child(6):  rear_left_wheel_link
+    child(7):  rear_right_wheel_link
+## defect: lidar parent camera_link with unchanged offset
+  <joint name="lidar_joint" type="fixed">
+    <parent link="camera_link"/><child link="lidar_link"/>
+    <origin xyz="0.28 0 0.38"/>
+  </joint>
+F.                                                                       [100%]
+=================================== FAILURES ===================================
+__________________ test_sensor_tree_and_expected_lidar_parent __________________
+
+    def test_sensor_tree_and_expected_lidar_parent():
+        robot = expanded_model()
+        links = {link.attrib['name'] for link in robot.findall('link')}
+        edges = {joint.find('child').attrib['link']:
+                 joint.find('parent').attrib['link'] for joint in robot.findall('joint')}
+        assert {'base_link', 'camera_link', 'lidar_link', 'imu_link'} <= links
+>       assert edges['lidar_link'] == 'base_link'
+E       AssertionError: assert 'camera_link' == 'base_link'
+E
+E         - base_link
+E         + camera_link
+
+src/course_description/test/test_model.py:19: AssertionError
+=========================== short test summary info ============================
+FAILED src/course_description/test/test_model.py::test_sensor_tree_and_expected_lidar_parent
+1 failed, 1 passed in 0.16s
+defect_test_exit=1
+## corrected parent
+..                                                                       [100%]
+2 passed in 0.13s
+fixed_test_exit=0
+## final model after visible sensor geometry
+robot name is: course_ackermann
+---------- Successfully Parsed XML ---------------
+root Link: base_link has 7 child(ren)
+    child(1):  camera_link
+    child(2):  front_left_wheel_link
+    child(3):  front_right_wheel_link
+    child(4):  imu_link
+    child(5):  lidar_link
+    child(6):  rear_left_wheel_link
+    child(7):  rear_right_wheel_link
+..                                                                       [100%]
+2 passed in 0.15s
+## after adding the visible sensor support and moving the worktree
+xacro and check_urdf: Successfully Parsed XML; root base_link has 7 children
+python3 -m pytest -q src/course_description/test/test_model.py: 2 passed
+colcon build --symlink-install: 4 packages finished
+colcon test --event-handlers console_direct+; colcon test-result --verbose: 32 tests, 0 errors, 0 failures, 2 skipped
