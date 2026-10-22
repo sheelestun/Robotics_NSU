@@ -10,8 +10,8 @@ jobs:
     container:
       image: osrf/ros:lyrical-desktop-full@sha256:12f03ad224f4f7801c4eeb320934b198fe0b9536d70f2f617894da08ca3bedba
     env:
-      COURSE_KIT_URL: https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w05-bca214e3de6f.tar.gz
-      COURSE_KIT_SHA256: bca214e3de6f90f9513049dfa0f36fee65ad834da502dc3f3f8fb443517b5197
+      COURSE_KIT_URL: https://ros.lms.ci.nsu.ru/downloads/robotics-course-kit-v1-w07-9b7fdd5424d3.tar.gz
+      COURSE_KIT_SHA256: 9b7fdd5424d3d97e47d51dbe23064934585e62135dc2902844dd679529bda929
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,7 +20,7 @@ jobs:
         shell: bash
         run: |
           source /opt/ros/lyrical/setup.bash
-          colcon build --symlink-install --packages-select turtle_bringup patrol course_bringup
+          colcon build --symlink-install --packages-select turtle_bringup patrol course_bringup course_description
           source install/setup.bash
           test -f "$(ros2 pkg prefix turtle_bringup)/share/turtle_bringup/launch/sim.launch.py"
           python3 -m py_compile \
@@ -28,12 +28,13 @@ jobs:
             src/patrol/patrol/patrol.py \
             src/course_bringup/launch/patrol.launch.py \
             src/course_bringup/course_bringup/pose_relay.py \
-            src/course_bringup/course_bringup/pose_subscriber.py
+            src/course_bringup/course_bringup/pose_subscriber.py \
+            src/course_description/launch/description.launch.py
       - name: Test ROS packages
         shell: bash
         run: |
           source /opt/ros/lyrical/setup.bash
-          colcon test --packages-select turtle_bringup patrol course_bringup --event-handlers console_direct+
+          colcon test --packages-select turtle_bringup patrol course_bringup course_description --event-handlers console_direct+
           colcon test-result --verbose
       - name: Download course kit
         shell: bash
@@ -42,6 +43,6 @@ jobs:
           printf '%s  %s\n' "$COURSE_KIT_SHA256" course-kit.tar.gz | sha256sum -c -
           mkdir -p .course-kit
           tar -xzf course-kit.tar.gz -C .course-kit
-      - name: Check PR05 evidence
+      - name: Check PR06 evidence
         shell: bash
-        run: python3 .course-kit/v1/tools/check_practice.py PR05 --submission .
+        run: python3 .course-kit/v1/tools/check_practice.py PR06 --submission .
