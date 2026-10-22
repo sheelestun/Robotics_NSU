@@ -28,6 +28,7 @@ setup(
     entry_points={
         'console_scripts': [
             'pose_relay = course_bringup.pose_relay:main',
+            'pose_replay_visualizer = course_bringup.pose_replay_visualizer:main',
             'pose_subscriber = course_bringup.pose_subscriber:main',
         ],
     },

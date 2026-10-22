@@ -2,6 +2,9 @@ build/
 install/
 log/
 .course-kit/
+.worktrees/
 robotics-course-kit-*.tar.gz
 robotics-course-kit-*.sha256.txt
 __pycache__/
+AGENT_SKILLS.md
+AGENTS.md
