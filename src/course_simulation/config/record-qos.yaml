@@ -1,0 +1,17 @@
+/tf_static:
+  reliability: reliable
+  durability: transient_local
+  history: keep_last
+  depth: 1
+/vehicle/camera/image_raw:
+  reliability: best_effort
+  history: keep_last
+  depth: 10
+/vehicle/scan:
+  reliability: best_effort
+  history: keep_last
+  depth: 10
+/vehicle/imu:
+  reliability: best_effort
+  history: keep_last
+  depth: 10
