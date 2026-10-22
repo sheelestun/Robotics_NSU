@@ -1,0 +1,56 @@
+{
+  "course_kit": {
+    "version": "v1-w07",
+    "archive_sha256": "9b7fdd5424d3d97e47d51dbe23064934585e62135dc2902844dd679529bda929"
+  },
+  "environment": {
+    "ubuntu": "26.04",
+    "ros": "lyrical",
+    "gazebo": "Jetty 10.4.0",
+    "time_source": "/clock",
+    "headless_rendering": "OGRE2/EGL"
+  },
+  "sensors": [
+    {
+      "topic": "/vehicle/camera/image_raw",
+      "type": "sensor_msgs/msg/Image",
+      "frame_id": "camera_link",
+      "stamp_source": "simulation",
+      "declared_hz": 20,
+      "measured_hz": 6.704,
+      "qos": "best_effort, keep_last"
+    },
+    {
+      "topic": "/vehicle/scan",
+      "type": "sensor_msgs/msg/LaserScan",
+      "frame_id": "lidar_link",
+      "stamp_source": "simulation",
+      "declared_hz": 12,
+      "measured_hz": 10.658,
+      "qos": "best_effort, keep_last"
+    },
+    {
+      "topic": "/vehicle/imu",
+      "type": "sensor_msgs/msg/Imu",
+      "frame_id": "imu_link",
+      "stamp_source": "simulation",
+      "declared_hz": 100,
+      "measured_hz": 88.148,
+      "qos": "best_effort, keep_last"
+    },
+    {
+      "topic": "/vehicle/odom",
+      "source_topic": "/vehicle/odom_gz",
+      "type": "nav_msgs/msg/Odometry",
+      "source_frame_id": "course_ackermann/odom",
+      "source_child_frame_id": "course_ackermann/base_link",
+      "frame_id": "odom",
+      "child_frame_id": "base_link",
+      "stamp_source": "simulation",
+      "declared_hz": 50,
+      "measured_hz": 42.489,
+      "qos": "reliable, keep_last"
+    }
+  ],
+  "measurement_note": "ros2 topic hz with a 30-interval window while MCAP recording was active; camera rate fell during the sample. Frequencies are wall-clock delivery rates and depend on real-time factor and renderer load. See sensor-hz.txt."
+}

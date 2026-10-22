@@ -1,0 +1,5 @@
+# PR07: владелец динамического tf
+
+Вход bridge `/vehicle/odom_gz` несёт `header.frame_id=course_ackermann/odom` и `child_frame_id=course_ackermann/base_link`. Единственная нода `odom_adapter` проверяет эти имена и конечность чисел, убирает префикс, публикует `/vehicle/odom` с `odom` и `base_link` и одну связь `odom→base_link` в `/tf`. `robot_state_publisher` владеет только статическими связями датчиков из PR06. Сам bridge не публикует нормализованный `/vehicle/odom`, поэтому второго владельца этой связи нет.
+
+Тест `test_odometry_frames_and_payload_preserved` сравнивает исходные и выходные `stamp` (`sec=42`), pose, twist и обе covariance; `test_odometry_rejects_bad_frame_and_value` отвергает чужие frames и NaN. В живом запуске `route.txt` фиксирует оба исходных и нормализованных имени. `tf2_echo odom base_link` получил динамическую связь; после тестовой команды X в одометрии вырос с `2.919877370063153` до `5.4104860308814775` м. Запись MCAP содержит `/tf` и `/tf_static` вместе с нормализованной одометрией.

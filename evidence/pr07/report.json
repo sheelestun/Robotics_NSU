@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "practice_id": "PR07",
+  "commit": "3d8905e315cf7c6bd7c37e3d214ce73b24fdc629",
+  "course_kit": {
+    "version": "v1-w07",
+    "archive_sha256": "9b7fdd5424d3d97e47d51dbe23064934585e62135dc2902844dd679529bda929"
+  },
+  "commands": [
+    "gz sdf -k src/course_simulation/models/course_ackermann/model.sdf",
+    "colcon build --symlink-install --packages-up-to course_simulation",
+    "colcon test --packages-select course_description course_simulation --event-handlers console_direct+",
+    "ros2 launch course_simulation simulation.launch.py headless:=true",
+    "ros2 run course_simulation demo_drive",
+    "ros2 topic info -v /vehicle/imu",
+    "gz topic -i -t /vehicle/imu",
+    "ros2 bag record --storage mcap --use-sim-time --qos-profile-overrides-path src/course_simulation/config/record-qos.yaml -o fixtures/pr07-sensors --topics /vehicle/camera/image_raw /vehicle/scan /vehicle/imu /vehicle/odom /tf /tf_static /clock",
+    "ros2 bag info fixtures/pr07-sensors"
+  ],
+  "tests": [
+    {"name": "course_description/test_model", "status": "passed"},
+    {"name": "course_simulation/test_adapters", "status": "passed"}
+  ],
+  "defect": {
+    "reproducer": "В копии bridge.yaml заменить только gz_topic_name IMU на /vehicle/imu_broken: ROS publisher виден, но timeout echo завершается exit=124; gz topic -i показывает исходный /vehicle/imu",
+    "root_cause": "Bridge подписан на несуществующий Gazebo-топик IMU, хотя ROS endpoint создан",
+    "proof_after": "Вернуть gz_topic_name=/vehicle/imu и перезапустить единственный bridge: ROS echo получил frame_id=imu_link, exit=0"
+  },
+  "claims": {
+    "public_tests_passed": true,
+    "defect_reproduced": true,
+    "defect_fixed": true,
+    "headless_verified": true,
+    "recording_verified": true,
+    "odometry_tf_owned": true
+  },
+  "time": {
+    "contact_academic_hours": 2,
+    "self_study_hours": 2.5
+  },
+  "ai_used": true
+}

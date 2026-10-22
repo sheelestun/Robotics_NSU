@@ -1,0 +1,7 @@
+# Источник задания PR07
+
+- Страница: https://ros.lms.ci.nsu.ru/practices/pr07 (неделя 07, «Gazebo и мост ros_gz»).
+- Точная дата первой публикации на странице не указана. Лента изменений курса содержит исправления модели, среды и зависимостей от 19 октября 2026 года: https://ros.lms.ci.nsu.ru/course/changes.
+- Проверенный архив: `v1-w07`, SHA-256 `9b7fdd5424d3d97e47d51dbe23064934585e62135dc2902844dd679529bda929`. Входы: `models/course_ackermann/`, `worlds/mcity-minimal.sdf`, `config/bridge.yaml`, `config/baseline.lock.yaml`, `contracts/topics.md`; манифест: `practices/manifests/pr07.json`.
+- Контракт: пакет `course_simulation`, один headless launch с Gazebo `-s -r --headless-rendering`, `robot_state_publisher`, одним bridge и адаптерами; `/drive/safe` Ackermann→Twist по заданным ограничениям и временному окну 0,25 с; нормализация `/vehicle/odom_gz` до `/vehicle/odom` с единственным владельцем `odom→base_link`; изменённый параметр сенсора и namespace; диагностика неверного IMU/command в копии YAML; измеренные частоты, frame ID и время `/clock`; запись семи топиков MCAP не менее 30 с симуляционного времени; `sensors.json`, `headless.txt`, `bag-info.txt`, `odom-adapter.md`, `report.json`, запись в `AI_USAGE.md`.
+- Манифест требует claims `public_tests_passed`, `defect_reproduced`, `defect_fixed`, `headless_verified`, `recording_verified`, `odometry_tf_owned`. Проверка `check_practice.py PR07`.

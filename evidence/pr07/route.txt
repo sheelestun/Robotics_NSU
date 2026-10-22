@@ -1,0 +1,58 @@
+## odom before
+2.919877370063153
+---
+## publish fresh /drive/safe
+## ROS adapter output
+A message was lost!!!
+	total count change:10
+	total count: 10---
+linear:
+  x: 0.5
+  y: 0.0
+  z: 0.0
+angular:
+  x: 0.0
+  y: 0.0
+  z: 0.06270917099410483
+---
+## Gazebo command
+linear {
+  x: 0.5
+}
+angular {
+  z: 0.062709170994104835
+}
+
+linear {
+  x: 0.5
+}
+angular {
+  z: 0.062709170994104835
+}
+
+linear {
+  x: 0.5
+}
+angular {
+  z: 0.062709170994104835
+}
+
+linear {
+## odom after
+5.4104860308814775
+---
+## normalized odom frames
+odom
+---
+base_link
+---
+## raw odom frames
+course_ackermann/odom
+---
+course_ackermann/base_link
+---
+## repeat after moving the worktree and rate-limiting demo_drive
+ros2 run course_simulation demo_drive: exit=0
+ros2 topic echo /vehicle/odom --once: frame_id=odom, child_frame_id=base_link, position.x=2.906709169948026, position.y=0.48052883067913865
+colcon build --symlink-install: 5 packages finished
+colcon test --event-handlers console_direct+; colcon test-result --verbose: 36 tests, 0 errors, 0 failures, 2 skipped

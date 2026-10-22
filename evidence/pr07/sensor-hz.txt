@@ -1,0 +1,76 @@
+## versions
+VERSION_ID="26.04"
+ROS_DISTRO=lyrical
+10.4.0
+## clock
+clock:
+  sec: 183
+  nanosec: 580000000
+---
+## /vehicle/camera/image_raw QoS
+  Reliability: BEST_EFFORT
+  Durability: VOLATILE
+  Reliability: BEST_EFFORT
+  Durability: VOLATILE
+## /vehicle/camera/image_raw measured hz
+average rate: 11.632
+	min: 0.051s max: 0.124s std dev: 0.02929s window: 6
+average rate: 10.424
+	min: 0.051s max: 0.279s std dev: 0.06569s window: 16
+average rate: 8.366
+	min: 0.051s max: 0.346s std dev: 0.08840s window: 21
+average rate: 7.665
+	min: 0.051s max: 0.346s std dev: 0.09660s window: 24
+average rate: 6.704
+	min: 0.051s max: 0.835s std dev: 0.15659s window: 30
+failed to initialize wait set: the given context is not valid, either rcl_init() was not called or rcl_shutdown() was called., at ./src/rcl/wait.c:110
+## /vehicle/scan QoS
+  Reliability: BEST_EFFORT
+  Durability: VOLATILE
+  Reliability: BEST_EFFORT
+  Durability: VOLATILE
+## /vehicle/scan measured hz
+average rate: 10.308
+	min: 0.086s max: 0.118s std dev: 0.00992s window: 9
+average rate: 10.575
+	min: 0.086s max: 0.118s std dev: 0.00812s window: 20
+average rate: 10.553
+	min: 0.083s max: 0.118s std dev: 0.00752s window: 30
+average rate: 10.712
+	min: 0.076s max: 0.106s std dev: 0.00701s window: 30
+average rate: 10.658
+	min: 0.076s max: 0.106s std dev: 0.00666s window: 30
+failed to initialize wait set: the given context is not valid, either rcl_init() was not called or rcl_shutdown() was called., at ./src/rcl/wait.c:110
+## /vehicle/imu QoS
+  Reliability: BEST_EFFORT
+  Durability: VOLATILE
+  Reliability: BEST_EFFORT
+  Durability: VOLATILE
+## /vehicle/imu measured hz
+average rate: 89.066
+	min: 0.009s max: 0.021s std dev: 0.00247s window: 30
+average rate: 90.299
+	min: 0.007s max: 0.018s std dev: 0.00258s window: 30
+average rate: 91.007
+	min: 0.009s max: 0.022s std dev: 0.00259s window: 30
+average rate: 88.253
+	min: 0.008s max: 0.025s std dev: 0.00328s window: 30
+average rate: 88.148
+	min: 0.009s max: 0.024s std dev: 0.00305s window: 30
+## /vehicle/odom QoS
+  Reliability: RELIABLE
+  Durability: VOLATILE
+  Reliability: RELIABLE
+  Durability: VOLATILE
+## /vehicle/odom measured hz
+average rate: 44.452
+	min: 0.018s max: 0.037s std dev: 0.00420s window: 30
+average rate: 44.111
+	min: 0.019s max: 0.037s std dev: 0.00383s window: 30
+average rate: 44.401
+	min: 0.019s max: 0.028s std dev: 0.00309s window: 30
+average rate: 44.303
+	min: 0.017s max: 0.031s std dev: 0.00348s window: 30
+average rate: 42.489
+	min: 0.019s max: 0.043s std dev: 0.00487s window: 30
+failed to initialize wait set: the given context is not valid, either rcl_init() was not called or rcl_shutdown() was called., at ./src/rcl/wait.c:110

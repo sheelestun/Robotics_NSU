@@ -1,0 +1,82 @@
+## broken bridge YAML
+- ros_topic_name: /vehicle/imu
+  gz_topic_name: /vehicle/imu_broken
+  ros_type_name: sensor_msgs/msg/Imu
+  gz_type_name: gz.msgs.IMU
+  direction: GZ_TO_ROS
+## ROS endpoint
+Type: sensor_msgs/msg/Imu
+
+Publisher count: 1
+
+Node name: ros_gz_bridge
+Node namespace: /
+Topic type: sensor_msgs/msg/Imu
+Topic type hash: RIHS01_7d9a00ff131080897a5ec7e26e315954b8eae3353c3f995c55faf71574000b5b
+Endpoint type: PUBLISHER
+GID: 01.0f.eb.7d.b9.0a.e1.7c.00.00.00.00.00.00.16.03
+QoS profile:
+  Reliability: BEST_EFFORT
+  History (Depth): KEEP_LAST (5)
+  Durability: VOLATILE
+  Lifespan: Infinite
+  Deadline: Infinite
+  Liveliness: AUTOMATIC
+  Liveliness lease duration: Infinite
+
+Subscription count: 0
+
+## Gazebo original IMU
+Publishers [Address, Message Type]:
+  tcp://172.17.0.2:39041, gz.msgs.IMU
+No subscribers on topic [/vehicle/imu]
+## Gazebo wrong IMU
+No publishers on topic [/vehicle/imu_broken]
+Subscribers [Address, Message Type]:
+  tcp://172.17.0.2:34185, gz.msgs.IMU
+## bounded ROS echo with broken bridge
+!rclpy.ok()
+broken_echo_exit=124
+## Gazebo original sample
+header {
+  stamp {
+    sec: 13
+    nsec: 800000000
+  }
+  data {
+    key: "frame_id"
+    value: "imu_link"
+  }
+  data {
+    key: "seq"
+    value: "1"
+  }
+}
+entity_name: "course_ackermann::imu_link::imu"
+orientation {
+  x: 3.9606989198642594e-10
+  y: 1.0018582419332162e-10
+  z: -1.8623473323933101e-13
+  w: 1
+}
+orientation_covariance {
+## corrected bridge YAML
+- ros_topic_name: /vehicle/imu
+  gz_topic_name: /vehicle/imu
+  ros_type_name: sensor_msgs/msg/Imu
+  gz_type_name: gz.msgs.IMU
+  direction: GZ_TO_ROS
+## corrected Gazebo source
+Publishers [Address, Message Type]:
+  tcp://172.17.0.2:35145, gz.msgs.IMU
+Subscribers [Address, Message Type]:
+  tcp://172.17.0.2:44273, gz.msgs.IMU
+## corrected ROS IMU
+stamp:
+  sec: 9
+  nanosec: 150000000
+frame_id: imu_link
+---
+fixed_echo_exit=0
+## single bridge process, verified with ps -eo pid,comm,args
+3124 parameter_bridg /opt/ros/lyrical/lib/ros_gz_bridge/parameter_bridge --ros-args -r __ns:=/ --params-file /tmp/launch_params_mzqugzat
